@@ -7,6 +7,7 @@ app.use(express.json());
 // require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
-app.listen(PORT, function() {
-    console.log("Server listening on: http://localhost:" + PORT);
+app.listen(PORT, () => {
+    console.log(`Server listening on: http://localhost:${PORT}`);
 });
+
