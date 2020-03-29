@@ -1,4 +1,3 @@
-const path = require("path");
 const fs = require("fs");
 const util = require("util");
 
@@ -18,10 +17,24 @@ module.exports = app => {
     app.post("/api/notes", (req, res) => {
         readFileAsync("./db/db.json", "utf8").then(data => {
             const notes = JSON.parse(data);
-            notes.push(req.body)
-            writeFileAsync("./db/db.json", JSON.stringify(notes), "utf8");
-            console.log(`Saved notes: ${JSON.stringify(notes)}`)
+            notes.push(req.body);
+            writeFileAsync("./db/db.json", JSON.stringify(notes), "utf8").then(() => {
+                console.log(`Saved notes.`)
+                return res.status(200).end();
+            });
         });
+    });
+
+    app.delete("/api/notes/:id", (req, res) => {
+        readFileAsync("./db/db.json", "utf8").then(data => {
+            const notes = JSON.parse(data);
+            console.log(`req.params.id: ${req.params.id}`)
+            notes.splice(parseInt(req.params.id), 1)
+            writeFileAsync("./db/db.json", JSON.stringify(notes), "utf8").then(() => {
+                console.log(`Saved notes.`)
+                return res.status(200).end();
+            });
+        })
     })
 };
 

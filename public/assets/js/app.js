@@ -17,7 +17,6 @@ var getNotes = function() {
 
 // A function for saving a note to the db
 var saveNote = function(note) {
-  // console.log(`saveNote: ${JSON.stringify(note)}`)
   return $.ajax({
     url: "/api/notes",
     data: note,
@@ -68,24 +67,61 @@ var handleNoteSave = function() {
   });
 };
 
+// // Delete the clicked note
+// var handleNoteDelete = function(event) {
+//   // prevents the click listener for the list from being called when the button inside of it is clicked
+//   event.stopPropagation();
+//
+//   var note = $(this)
+//     .parent(".list-group-item")
+//     .data();
+//
+//   if (activeNote.id === note.id) {
+//     activeNote = {};
+//   }
+//
+//   deleteNote(note.id).then(function() {
+//     getAndRenderNotes();
+//     renderActiveNote();
+//   });
+// };
+
+
 // Delete the clicked note
 var handleNoteDelete = function(event) {
   // prevents the click listener for the list from being called when the button inside of it is clicked
+
+
+
+  console.log('delete note clicked.')
+
   event.stopPropagation();
 
   var note = $(this)
-    .parent(".list-group-item")
-    .data();
+      .parent(".list-group-item")
+      .data();
+
+
+
+  console.log(`note: ${note}`);
+  console.log(`note.id: ${note.id}`);
+  console.log(`note: ${note}`);
+  console.log(`activeNote: ${activeNote}`);
 
   if (activeNote.id === note.id) {
     activeNote = {};
   }
 
+
   deleteNote(note.id).then(function() {
+
     getAndRenderNotes();
+
     renderActiveNote();
+
   });
 };
+
 
 // Sets the activeNote and displays it
 var handleNoteView = function() {
@@ -118,7 +154,7 @@ var renderNoteList = function(notes) {
   for (var i = 0; i < notes.length; i++) {
     var note = notes[i];
 
-    var $li = $("<li class='list-group-item'>").data(note);
+    var $li = $(`<li class='list-group-item' data-id=${i}>`).data(note);
     var $span = $("<span>").text(note.title);
     var $delBtn = $(
       "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
@@ -128,13 +164,14 @@ var renderNoteList = function(notes) {
     noteListItems.push($li);
   }
 
+
   $noteList.append(noteListItems);
+
 };
 
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
   return getNotes().then(function(data) {
-    // console.log(data);
     renderNoteList(data);
   });
 };
