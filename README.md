@@ -2,10 +2,10 @@
 
 ## Description
 
-Application should allow users to create and save notes.
+Note taker allow users to create and save notes.
 
-Application should allow users to view previously saved notes.
+Note taker allow users to view previously saved notes.
 
-Application should allow users to delete previously saved notes.
+Note taker allow users to delete previously saved notes.
 
 - - -
