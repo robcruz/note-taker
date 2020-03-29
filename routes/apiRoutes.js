@@ -4,23 +4,24 @@ const util = require("util");
 
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
-console.log('starting api routes')
+// console.log('starting api routes')
 
 module.exports = app => {
-    app.get("/api/notes/", (req, res) => {
+    app.get("/api/notes", (req, res) => {
+        readFileAsync("./db/db.json", "utf8").then(data => {
+            const notes = JSON.parse(data);
+            console.log(`Read notes: ${JSON.stringify(notes)}`);
+            res.json(notes)
+        });
+    });
 
-
-        res.json([{"title":"Test Title","text":"Test text"}])
-
-
-        // readFileAsync("../db/db.json", "utf8").then(data => {
-        //     // Parse the JSON string to an object
-        //     console.log(data);
-        //     const notes = JSON.parse(data);
-        //     console.log(notes);
-        //     res.json(notes)
-        //
-        // });
+    app.post("/api/notes", (req, res) => {
+        readFileAsync("./db/db.json", "utf8").then(data => {
+            const notes = JSON.parse(data);
+            notes.push(req.body)
+            writeFileAsync("./db/db.json", JSON.stringify(notes), "utf8");
+            console.log(`Saved notes: ${JSON.stringify(notes)}`)
+        });
     })
 };
 
